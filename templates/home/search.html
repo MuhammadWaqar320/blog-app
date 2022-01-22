@@ -1,0 +1,31 @@
+{% extends 'base.html' %}
+{% block title  %}Search Result{% endblock %}
+ {% block blogactive %}active{% endblock blogactive %}
+{% block cs %} {% endblock %}
+{% block body %}
+<div class="container my-5" style="margin-bottom:30px">
+    <div class="col-md-12">
+     <h1>Search Results</h1>
+        {% if allpost|length < 1 %}
+        <div>
+            <h3>No search results</h3>
+            <h4>Your query : {{query}} did not matched</h4>
+            <h4>Try again</h4>
+        </div>
+        {% endif %}
+        {% for post in allpost%}
+      <div class="row no-gutters border rounded overflow-hidden flex-md-row mb-4 shadow-sm h-md-250 position-relative">
+        <div class="col p-4 d-flex flex-column position-static">
+
+          <h3 class="mb-0">{{post.title}}</h3>
+          <div class="mb-1 text-muted">Nov 12</div>
+          <p class="card-text mb-auto">{{post.content|truncatechars:200}}</p>
+              <strong class="d-inline-block mb-2 text-primary">{{post.author}}</strong>
+          <a href="/blog/{{post.slug}}" class="stretched-link">Continue reading</a>
+        </div>
+      </div>
+        {% endfor %}
+    </div>
+
+</div> {% endblock %}
+{% block js %} {% endblock %}

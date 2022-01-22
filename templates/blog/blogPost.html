@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% block title %}blogpost{% endblock %}
+ {% block blogactive %}active{% endblock blogactive %}
+{% block cs %} {% endblock %}
+{% block body %}
+{% load humanize %}
+<div class="container my-3">
+<div class="blog-post">
+        <h2 class="blog-post-title">{{Post.title}}</h2>
+        <p class="blog-post-meta">Posted by <a href="/about"> {{Post.author}}</a><span> {{Post.views}} views</span></p>
+
+        <p>{{Post.content|safe}}</p>
+        <hr>
+      </div>
+      </div>
+<div class="container">
+    <h1>Comments({{comment.count}})</h1>
+    <div class="my-2">
+        {% if user.is_authenticated %}
+            <form action="/blog/postComment" method="post">{% csrf_token %}
+                <label>Post Comment</label><br>
+                <input type="text" name="comment" placeholder="Enter comment here">
+                <input type="hidden" name="postSno" value="{{Post.sno}}" >
+                <input type="submit" value="Submit">
+            </form>
+        {% else %}
+            <p>Please login to post comment</p>
+        {% endif %}
+
+    </div>
+
+    {% for com in comment %}
+    <div class="row">
+        <div class="col-md-1"><img src="/static/img/update.jpg" class="border border-dark" width="40px" height="40px" style="border-radius:8px"></div>
+        <div class="col-md-11">
+            <b>{{com.user.username}}</b> {{com.timestamp|naturaltime}}
+            <p> {{com.comment|safe}}</p></div>
+
+    </div>
+    {% endfor %}
+</div>
+{% endblock %}
+{% block js %} {% endblock %}

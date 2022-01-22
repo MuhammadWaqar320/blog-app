@@ -1,0 +1,150 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <!-- Required meta tags -->
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <!-- Bootstrap CSS -->
+ <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+   <title>  {% block title %}  {% endblock %}</title>
+   <style>
+        {% block css %}  {% endblock %}
+   </style>
+
+
+</head>
+
+<body>
+{% load static %}
+    <!--  navigation bar code starts here-->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-dark">
+        <a class="navbar-brand" href="/" style="font-family:initial;font-weight:bold;">iCoder</a>
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+            aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item {% block homeactive %} {% endblock homeactive %}">
+                    <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+                </li>
+                <li class="nav-item {% block aboutactive %} {% endblock aboutactive %}">
+                    <a class="nav-link" href="/about">About us</a>
+                </li>
+
+                <li class="nav-item {% block contactactive %} {% endblock contactactive %}">
+                    <a class="nav-link" href="/contact" tabindex="-1" aria-disabled="true">Contact</a>
+                </li>
+
+
+                  <li class="nav-item {% block blogactive %} {% endblock blogactive %}">
+                    <a class="nav-link" href="/blog" tabindex="-1" aria-disabled="true">Blog</span></a>
+                </li>
+            </ul>
+            <div class="ml-auto form-inline">
+             <form method='get' action='/search' class=" my-2 my-lg-0">
+      <input class="form-control mr-sm-2" type="search" placeholder="Search" aria-label="Search" name="search" id="search">
+      <button class="btn btn-outline-success my-2 my-sm-0" type="submit">Search</button>
+
+    </form>
+            {% if user.is_authenticated %}
+                <ul class="navbar-nav ml-auto">
+                    <li class="nav-item dropdown">
+                        <a class="nav-link dropdown-toggle" href='#' id="navbarDropdown" role="button" data-toggle="dropdown"> Welcome {{request.user}}</a>
+                        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+                            <a class="dropdown-item" href="/logout">Logout</a>
+                        </div>
+                    </li>
+                </ul>
+      </div>
+{% else %}
+  <!-- Button to  trigger Login modal -->
+    <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#Modal1">Login</button>
+    <button type="button" class="btn btn-success mr-2" data-toggle="modal" data-target="#Modal2">SignUp</button>
+{% endif %}
+        </div>
+    </nav>
+{% for message in messages %}
+<div class="alert alert-{{message.tags}} alert-dismissible fade show" role="alert">
+  <strong>Alert!</strong> {{message}}
+  <button type="button" class="btn-close" data-bs-dismiss="alert" aria-label="Close"></button>
+</div>
+{% endfor %}
+<!--login modal-->
+
+<div class="modal fade" id="Modal1" tabindex="-1" role="dialog" aria-labelledby="Modal1" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="ModalLabel">Login Form</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+   <form action="/login" method="post" >{% csrf_token %}
+    <label class="visually-hidden">Name</label>
+    <input type="text" id="name1" class="form-control" name="nameL" placeholder="Enter Name" required autofocus>
+    <label class="visually-hidden">Password</label>
+    <input type="password" id="password" class="form-control" name="passL" placeholder="Enter Password" required>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="submit" class="btn btn-warning">Submit</button>
+</div>
+  </form>
+</div>
+
+</div>
+</div>
+</div>
+<!--sign up-->
+<div class="modal fade" id="Modal2" tabindex="-1" role="dialog" aria-labelledby="Modal1" aria-hidden="true">
+<div class="modal-dialog" role="document">
+<div class="modal-content">
+<div class="modal-header">
+<h5 class="modal-title" id="ModalLabel1">Sign Up Form</h5>
+<button type="button" class="close" data-dismiss="modal" aria-label="Close">
+<span aria-hidden="true">&times;</span>
+</button>
+</div>
+<div class="modal-body">
+   <form action="/signup" method="post" >{% csrf_token %}
+    <label class="visually-hidden">Name</label>
+    <input type="text" id="nameS" class="form-control" name="nameS" placeholder="Enter Name" required autofocus>
+    <label class="visually-hidden">Email</label>
+    <input type="email" id="emailS" class="form-control" name="emailS" placeholder="Enter Email" required>
+       <label class="visually-hidden">Password</label>
+    <input type="password" id="pass1" class="form-control" name="pass1" placeholder="Enter Password" required>
+          <label class="visually-hidden">Confirm Password</label>
+    <input type="password" id="pass2" class="form-control" name="pass2" placeholder="Enter Again Password" required>
+<div class="modal-footer">
+<button type="button" class="btn btn-secondary" data-dismiss="modal">Close</button>
+<button type="submit" class="btn btn-warning">Submit</button>
+</div>
+  </form>
+</div>
+
+</div>
+</div>
+</div>
+ {% block body %}  {% endblock %}
+
+
+
+
+<!--   loading static files-->
+
+
+    <!-- Optional JavaScript; choose one of the two! -->
+
+    <!-- Option 1: jQuery and Bootstrap Bundle (includes Popper) -->
+   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.0/dist/umd/popper.min.js" integrity="sha384-Q6E9RHvbIyZFJoft+2mJbHaEWldlvI9IOYy5n3zV9zzTtmI3UksdQRVvoxMfooAo" crossorigin="anonymous"></script>
+    <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/js/bootstrap.min.js" integrity="sha384-OgVRvuATP1z7JjHLkuOU7Xw704+h835Lr+6QL9UvYjZE3Ipu6Tp75j7Bh/kR0JKI" crossorigin="anonymous"></script>
+  </body>
+{%  block js  %}
+  {% endblock %}
+  </body>
+</html>
